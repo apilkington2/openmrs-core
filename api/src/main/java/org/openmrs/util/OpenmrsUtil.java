@@ -1843,9 +1843,13 @@ public class OpenmrsUtil {
 		if (password == null) {
 			throw new WeakPasswordException();
 		}
-		
-		if ("true".equals(userGp) && (password.equals(username) || password.equals(systemId))) {
-			throw new WeakPasswordException();
+
+		if ("true".equals(userGp) && password.equals(username)) {
+			throw new InvalidCharactersPasswordException(getMessage("error.password.matchingUsername"));
+		}
+
+		if ("true".equals(userGp) && password.equals(systemId)) {
+			throw new InvalidCharactersPasswordException(getMessage("error.password.matchingSystemID"));
 		}
 		
 		if (StringUtils.isNotEmpty(lengthGp)) {
