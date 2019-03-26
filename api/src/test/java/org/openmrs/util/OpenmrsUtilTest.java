@@ -47,9 +47,7 @@ import org.openmrs.GlobalProperty;
 import org.openmrs.PatientIdentifier;
 import org.openmrs.PatientIdentifierType;
 import org.openmrs.User;
-import org.openmrs.api.InvalidCharactersPasswordException;
-import org.openmrs.api.ShortPasswordException;
-import org.openmrs.api.WeakPasswordException;
+import org.openmrs.api.InvalidPasswordException;
 import org.openmrs.api.context.Context;
 import org.openmrs.test.BaseContextSensitiveTest;
 import org.openmrs.test.TestUtil;
@@ -149,7 +147,7 @@ public class OpenmrsUtilTest extends BaseContextSensitiveTest {
 	/**
 	 * @see OpenmrsUtil#validatePassword(String,String,String)
 	 */
-	@Test(expected = InvalidCharactersPasswordException.class)
+	@Test(expected = InvalidPasswordException.class)
 	public void validatePassword_shouldFailWithDigitOnlyPasswordByDefault() {
 		OpenmrsUtil.validatePassword("admin", "12345678", "1-8");
 	}
@@ -157,7 +155,7 @@ public class OpenmrsUtilTest extends BaseContextSensitiveTest {
 	/**
 	 * @see OpenmrsUtil#validatePassword(String,String,String)
 	 */
-	@Test(expected = InvalidCharactersPasswordException.class)
+	@Test(expected = InvalidPasswordException.class)
 	public void validatePassword_shouldFailWithDigitOnlyPasswordIfNotAllowed() {
 		TestUtil.saveGlobalProperty(OpenmrsConstants.GP_PASSWORD_REQUIRES_NON_DIGIT, "true");
 		OpenmrsUtil.validatePassword("admin", "12345678", "1-8");
@@ -176,7 +174,7 @@ public class OpenmrsUtilTest extends BaseContextSensitiveTest {
 	/**
 	 * @see OpenmrsUtil#validatePassword(String,String,String)
 	 */
-	@Test(expected = InvalidCharactersPasswordException.class)
+	@Test(expected = InvalidPasswordException.class)
 	public void validatePassword_shouldFailWithCharOnlyPasswordByDefault() {
 		OpenmrsUtil.validatePassword("admin", "testonly", "1-8");
 	}
@@ -184,7 +182,7 @@ public class OpenmrsUtilTest extends BaseContextSensitiveTest {
 	/**
 	 * @see OpenmrsUtil#validatePassword(String,String,String)
 	 */
-	@Test(expected = InvalidCharactersPasswordException.class)
+	@Test(expected = InvalidPasswordException.class)
 	public void validatePassword_shouldFailWithCharOnlyPasswordIfNotAllowed() {
 		TestUtil.saveGlobalProperty(OpenmrsConstants.GP_PASSWORD_REQUIRES_DIGIT, "true");
 		OpenmrsUtil.validatePassword("admin", "testonly", "1-8");
@@ -203,7 +201,7 @@ public class OpenmrsUtilTest extends BaseContextSensitiveTest {
 	/**
 	 * @see OpenmrsUtil#validatePassword(String,String,String)
 	 */
-	@Test(expected = InvalidCharactersPasswordException.class)
+	@Test(expected = InvalidPasswordException.class)
 	public void validatePassword_shouldFailWithoutUpperAndLowerCasePasswordByDefault() {
 		OpenmrsUtil.validatePassword("admin", "test0nl1", "1-8");
 	}
@@ -211,7 +209,7 @@ public class OpenmrsUtilTest extends BaseContextSensitiveTest {
 	/**
 	 * @see OpenmrsUtil#validatePassword(String,String,String)
 	 */
-	@Test(expected = InvalidCharactersPasswordException.class)
+	@Test(expected = InvalidPasswordException.class)
 	public void validatePassword_shouldFailWithoutUpperAndLowerCasePasswordIfNotAllowed() {
 		TestUtil.saveGlobalProperty(OpenmrsConstants.GP_PASSWORD_REQUIRES_UPPER_AND_LOWER_CASE, "true");
 		OpenmrsUtil.validatePassword("admin", "test0nl1", "1-8");
@@ -229,7 +227,7 @@ public class OpenmrsUtilTest extends BaseContextSensitiveTest {
 	/**
 	 * @see OpenmrsUtil#validatePassword(String,String,String)
 	 */
-	@Test(expected = InvalidCharactersPasswordException.class)
+	@Test(expected = InvalidPasswordException.class)
 	public void validatePassword_shouldFailWithPasswordEqualsToUserNameByDefault() {
 		OpenmrsUtil.validatePassword("Admin1234", "Admin1234", "1-8");
 	}
@@ -237,7 +235,7 @@ public class OpenmrsUtilTest extends BaseContextSensitiveTest {
 	/**
 	 * @see OpenmrsUtil#validatePassword(String,String,String)
 	 */
-	@Test(expected = InvalidCharactersPasswordException.class)
+	@Test(expected = InvalidPasswordException.class)
 	public void validatePassword_shouldFailWithPasswordEqualsToUserNameIfNotAllowed() {
 		TestUtil.saveGlobalProperty(OpenmrsConstants.GP_PASSWORD_CANNOT_MATCH_USERNAME_OR_SYSTEMID, "true");
 		OpenmrsUtil.validatePassword("Admin1234", "Admin1234", "1-8");
@@ -255,7 +253,7 @@ public class OpenmrsUtilTest extends BaseContextSensitiveTest {
 	/**
 	 * @see OpenmrsUtil#validatePassword(String,String,String)
 	 */
-	@Test(expected = InvalidCharactersPasswordException.class)
+	@Test(expected = InvalidPasswordException.class)
 	public void validatePassword_shouldFailWithPasswordEqualsToSystemIdByDefault() {
 		OpenmrsUtil.validatePassword("admin", "Admin1234", "Admin1234");
 	}
@@ -263,7 +261,7 @@ public class OpenmrsUtilTest extends BaseContextSensitiveTest {
 	/**
 	 * @see OpenmrsUtil#validatePassword(String,String,String)
 	 */
-	@Test(expected = InvalidCharactersPasswordException.class)
+	@Test(expected = InvalidPasswordException.class)
 	public void validatePassword_shouldFailWithPasswordEqualsToSystemIdIfNotAllowed() {
 		TestUtil.saveGlobalProperty(OpenmrsConstants.GP_PASSWORD_CANNOT_MATCH_USERNAME_OR_SYSTEMID, "true");
 		OpenmrsUtil.validatePassword("admin", "Admin1234", "Admin1234");
@@ -281,7 +279,7 @@ public class OpenmrsUtilTest extends BaseContextSensitiveTest {
 	/**
 	 * @see OpenmrsUtil#validatePassword(String,String,String)
 	 */
-	@Test(expected = ShortPasswordException.class)
+	@Test(expected = InvalidPasswordException.class)
 	public void validatePassword_shouldFailWithShortPasswordByDefault() {
 		OpenmrsUtil.validatePassword("admin", "1234567", "1-8");
 	}
@@ -289,7 +287,7 @@ public class OpenmrsUtilTest extends BaseContextSensitiveTest {
 	/**
 	 * @see OpenmrsUtil#validatePassword(String,String,String)
 	 */
-	@Test(expected = ShortPasswordException.class)
+	@Test(expected = InvalidPasswordException.class)
 	public void validatePassword_shouldFailWithShortPasswordIfNotAllowed() {
 		TestUtil.saveGlobalProperty(OpenmrsConstants.GP_PASSWORD_MINIMUM_LENGTH, "6");
 		OpenmrsUtil.validatePassword("admin", "12345", "1-8");
@@ -307,7 +305,7 @@ public class OpenmrsUtilTest extends BaseContextSensitiveTest {
 	/**
 	 * @see OpenmrsUtil#validatePassword(String,String,String)
 	 */
-	@Test(expected = InvalidCharactersPasswordException.class)
+	@Test(expected = InvalidPasswordException.class)
 	public void validatePassword_shouldFailWithPasswordNotMatchingConfiguredRegex() {
 		TestUtil.saveGlobalProperty(OpenmrsConstants.GP_PASSWORD_CUSTOM_REGEX,
 		    "[A-Z][a-z][0-9][0-9][a-z][A-Z][a-z][a-z][a-z][a-z]");
