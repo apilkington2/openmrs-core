@@ -255,7 +255,7 @@ public class OpenmrsUtilTest extends BaseContextSensitiveTest {
 	/**
 	 * @see OpenmrsUtil#validatePassword(String,String,String)
 	 */
-	@Test(expected = WeakPasswordException.class)
+	@Test(expected = InvalidCharactersPasswordException.class)
 	public void validatePassword_shouldFailWithPasswordEqualsToSystemIdByDefault() {
 		OpenmrsUtil.validatePassword("admin", "Admin1234", "Admin1234");
 	}
@@ -263,7 +263,7 @@ public class OpenmrsUtilTest extends BaseContextSensitiveTest {
 	/**
 	 * @see OpenmrsUtil#validatePassword(String,String,String)
 	 */
-	@Test(expected = WeakPasswordException.class)
+	@Test(expected = InvalidCharactersPasswordException.class)
 	public void validatePassword_shouldFailWithPasswordEqualsToSystemIdIfNotAllowed() {
 		TestUtil.saveGlobalProperty(OpenmrsConstants.GP_PASSWORD_CANNOT_MATCH_USERNAME_OR_SYSTEMID, "true");
 		OpenmrsUtil.validatePassword("admin", "Admin1234", "Admin1234");
