@@ -19,7 +19,7 @@ import org.openmrs.util.OpenmrsUtil;
  * 
  * @since 1.5
  */
-public class InvalidPasswordException  extends PasswordException {
+public class InvalidPasswordException extends PasswordException {
 	
 	private static final long serialVersionUID = 31620091004L;
 	

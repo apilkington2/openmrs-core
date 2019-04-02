@@ -1817,6 +1817,7 @@ public class OpenmrsUtil {
 		String nonDigitGp = "true";
 		String regexGp = null;
 		AdministrationService svc = null;
+		List errors = new ArrayList();
 		
 		try {
 			svc = Context.getAdministrationService();
@@ -1843,18 +1844,18 @@ public class OpenmrsUtil {
 		}
 
 		if ("true".equals(userGp) && password.equals(username)) {
-			throw new InvalidPasswordException(getMessage("error.password.matchingUsername"));
+			errors.add(getMessage("error.password.matchingUsername"));
 		}
 
 		if ("true".equals(userGp) && password.equals(systemId)) {
-			throw new InvalidPasswordException(getMessage("error.password.matchingSystemID"));
+			errors.add(getMessage("error.password.matchingSystemID"));
 		}
 		
 		if (StringUtils.isNotEmpty(lengthGp)) {
 			try {
 				int minLength = Integer.parseInt(lengthGp);
 				if (password.length() < minLength) {
-					throw new InvalidPasswordException(getMessage("error.password.length", lengthGp));
+					errors.add(getMessage("error.password.length", lengthGp));
 				}
 			}
 			catch (NumberFormatException nfe) {
@@ -1864,15 +1865,15 @@ public class OpenmrsUtil {
 		}
 		
 		if ("true".equals(caseGp) && !containsUpperAndLowerCase(password)) {
-			throw new InvalidPasswordException(getMessage("error.password.requireMixedCase"));
+			errors.add(getMessage("error.password.requireMixedCase"));
 		}
 		
 		if ("true".equals(digitGp) && !containsDigit(password)) {
-			throw new InvalidPasswordException(getMessage("error.password.requireNumber"));
+			errors.add(getMessage("error.password.requireNumber"));
 		}
 		
 		if ("true".equals(nonDigitGp) && containsOnlyDigits(password)) {
-			throw new InvalidPasswordException(getMessage("error.password.requireLetter"));
+			errors.add(getMessage("error.password.requireLetter"));
 		}
 		
 		if (StringUtils.isNotEmpty(regexGp)) {
@@ -1880,13 +1881,17 @@ public class OpenmrsUtil {
 				Pattern pattern = Pattern.compile(regexGp);
 				Matcher matcher = pattern.matcher(password);
 				if (!matcher.matches()) {
-					throw new InvalidPasswordException(getMessage("error.password.different"));
+					errors.add(getMessage("error.password.different"));
 				}
 			}
 			catch (PatternSyntaxException pse) {
 				log.warn("Invalid regex of " + regexGp + " defined in global property <"
 				        + OpenmrsConstants.GP_PASSWORD_CUSTOM_REGEX + ">.");
 			}
+		}
+
+		if (!errors.isEmpty()) {
+			throw new InvalidPasswordException(String.join("\n", errors));
 		}
 	}
 	
