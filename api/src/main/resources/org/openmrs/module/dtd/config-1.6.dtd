@@ -15,10 +15,10 @@
 		(require_version?),
 		(require_database_version?),
 		(require_modules?),
+		(extension*),
 		(aware_of_modules?),
 		(mandatory?),
 		(library*),
-		(extension*),
 		(advice*),
 		(privilege*),
 		(globalProperty*),
@@ -27,8 +27,8 @@
 		(filter*),
 		(filter-mapping*),
 		(messages*),
-		(mappingFiles?)
-		(packagesWithMappedClasses?)
+		(mappingFiles?),
+		(packagesWithMappedClasses?),
 		(conditionalResources?)
 		)>
 	<!ATTLIST module configVersion CDATA #FIXED "1.6">
