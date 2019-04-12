@@ -101,7 +101,7 @@
 	<conditionalResources>
 		<conditionalResource>
 			<path>/lib/yourmodule-api-1.10.*</path>
-			<loadIfModulePresent>
+			<loadIfModulesPresent>
 				<openmrsModule>
 					<moduleId>metadatasharing</moduleId>
 					<version>1.*</version>
@@ -110,7 +110,7 @@
 					<moduleId>metadatamapping</moduleId>
 					<version>1.*</version>
 				</openmrsModule>
-			</loadIfModulePresent>
+			</loadIfModulesPresent>
 		</conditionalResource>
 	</conditionalResources>
 
