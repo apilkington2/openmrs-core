@@ -24,11 +24,11 @@ public class ModuleConfigDTDTest {
 
 	DocumentBuilderFactory domFactory;
 	DocumentBuilder builder;
-
-	// The DTD throws no errors if the XML is valid
-	@Test
-	public void validXMLTest() {
+	Boolean isError;
+	
+	public void isXMLError(String fileName) {
 		try {
+			isError = false;
 			domFactory = DocumentBuilderFactory.newInstance();
 			domFactory.setValidating(true);
 			builder = domFactory.newDocumentBuilder();
@@ -36,147 +36,59 @@ public class ModuleConfigDTDTest {
 
 				@Override
 				public void error(SAXParseException e) throws SAXException {
-					e.printStackTrace();
-					fail();
+					isError = true;
+					throw e;
 				}
 
 				@Override
 				public void fatalError(SAXParseException e) throws SAXException {
-					e.printStackTrace();
-					fail();
+					isError = true;
+					throw e;
 				}
 
 				@Override
 				public void warning(SAXParseException e) throws SAXException {
-					e.printStackTrace();
-					fail();
+					isError = false;
+					throw e;
 				}
 			});
-			Document doc = builder.parse("src/test/java/org/openmrs/module/dtd/testxml/valid.xml");
+			Document doc = builder.parse("src/test/java/org/openmrs/module/dtd/testxml/" + fileName);
 		} catch (SAXException e) {
 			e.printStackTrace();
-			fail();
+			isError = true;
 		} catch (IOException e) {
 			e.printStackTrace();
-			fail();
+			isError = null;
 		} catch (ParserConfigurationException e) {
-			fail();
+			isError = null;
 		}
+	}
+
+	// The DTD throws no errors if the XML is valid
+	@Test
+	public void validXMLTest() {
+		isXMLError("valid.xml");
+		assertTrue(!isError);
 	}
 
 	// The DTD throws an error if something that is required in the XML is removed (e.g. id) 
 	@Test
 	public void removeRequiredXMLTest() {
-		try {
-			boolean hitError = false; 
-			domFactory = DocumentBuilderFactory.newInstance();
-			domFactory.setValidating(true);
-			builder = domFactory.newDocumentBuilder();
-			builder.setErrorHandler(new ErrorHandler() {
-
-				@Override
-				public void error(SAXParseException e) throws SAXException {
-					throw e;
-				}
-
-				@Override
-				public void fatalError(SAXParseException e) throws SAXException {
-					fail();
-					throw e;
-				}
-
-				@Override
-				public void warning(SAXParseException e) throws SAXException {
-					fail();
-					throw e;
-				}
-			});
-			Document doc = builder.parse("src/test/java/org/openmrs/module/dtd/testxml/removeRequired.xml");
-			fail();
-		} catch (SAXException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-			fail();
-		} catch (ParserConfigurationException e) {
-			fail();
-		}
+		isXMLError("removeRequired.xml");
+		assertTrue(isError);
 	}
 	
 	// The DTD throws an error if the XML file is out of order
 	@Test
 	public void reorderedXMLTest() {
-		try {
-			boolean hitError = false;
-			domFactory = DocumentBuilderFactory.newInstance();
-			domFactory.setValidating(true);
-			builder = domFactory.newDocumentBuilder();
-			builder.setErrorHandler(new ErrorHandler() {
-
-				@Override
-				public void error(SAXParseException e) throws SAXException {
-					throw e;
-				}
-
-				@Override
-				public void fatalError(SAXParseException e) throws SAXException {
-					fail();
-					throw e;
-				}
-
-				@Override
-				public void warning(SAXParseException e) throws SAXException {
-					fail();
-					throw e;
-				}
-			});
-			Document doc = builder.parse("src/test/java/org/openmrs/module/dtd/testxml/reordered.xml");
-			fail();
-		} catch (SAXException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-			fail();
-		} catch (ParserConfigurationException e) {
-			fail();
-		}
+		isXMLError("reordered.xml");
+		assertTrue(isError);
 	}
 
 	// The DTD throws an error if the XML file is out of order
 	@Test
 	public void syntaxErrorXMLTest() {
-		try {
-			boolean hitError = false;
-			domFactory = DocumentBuilderFactory.newInstance();
-			domFactory.setValidating(true);
-			builder = domFactory.newDocumentBuilder();
-			builder.setErrorHandler(new ErrorHandler() {
-
-				@Override
-				public void error(SAXParseException e) throws SAXException {
-					throw e;
-				}
-
-				@Override
-				public void fatalError(SAXParseException e) throws SAXException {
-					throw e;
-				}
-
-				@Override
-				public void warning(SAXParseException e) throws SAXException {
-					fail();
-					throw e;
-				}
-			});
-			Document doc = builder.parse("src/test/java/org/openmrs/module/dtd/testxml/syntaxError.xml");
-			fail();
-		} catch (SAXException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-			fail();
-		} catch (ParserConfigurationException e) {
-			fail();
-		}
+		isXMLError("syntaxError.xml");
+		assertTrue(isError);
 	}
 }
