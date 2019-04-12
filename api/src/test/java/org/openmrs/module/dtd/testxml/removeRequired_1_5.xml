@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE module PUBLIC "-//OpenMRS//DTD OpenMRS Config 1.0//EN"
-	"config-1.5.dtd">
+	"http://resources.openmrs.org/doctype/config-1.5.dtd">
 <module configVersion="1.5">
 
 	<!-- Base Module Properties -->
-	<id>${project.parent.artifactId}</id>
+	<!--<id>${project.parent.artifactId}</id>-->
 	<name>${project.parent.name}</name>
 	<version>${project.parent.version}</version>
 	<package>org.openmrs.module.basicexample</package>
-	<author>peytontanzillo<author>
+	<author>example123</author>
 	<description>
 		${project.parent.description}
 	</description>

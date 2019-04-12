@@ -1,7 +1,5 @@
 package org.openmrs.module.dtd;
 
-import org.apache.xpath.operations.Bool;
-import org.junit.Before;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.SAXException;
@@ -15,10 +13,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import java.io.IOException;
-import java.util.EmptyStackException;
 
 import static junit.framework.TestCase.assertTrue;
-import static junit.framework.TestCase.fail;
 
 public class ModuleConfigDTDTest {
 
@@ -64,31 +60,67 @@ public class ModuleConfigDTDTest {
 		}
 	}
 
+	/*
+	CONFIG FILE 1.5 TESTS
+	 */
+	
 	// The DTD throws no errors if the XML is valid
 	@Test
-	public void validXMLTest() {
-		isXMLError("valid.xml");
+	public void validXMLTest_1_5() {
+		isXMLError("valid_1_5.xml");
 		assertTrue(!isError);
 	}
 
 	// The DTD throws an error if something that is required in the XML is removed (e.g. id) 
 	@Test
-	public void removeRequiredXMLTest() {
-		isXMLError("removeRequired.xml");
+	public void removeRequiredXMLTest_1_5() {
+		isXMLError("removeRequired_1_5.xml");
 		assertTrue(isError);
 	}
 	
 	// The DTD throws an error if the XML file is out of order
 	@Test
-	public void reorderedXMLTest() {
-		isXMLError("reordered.xml");
+	public void reorderedXMLTest_1_5() {
+		isXMLError("reordered_1_5.xml");
 		assertTrue(isError);
 	}
 
 	// The DTD throws an error if the XML file is out of order
 	@Test
-	public void syntaxErrorXMLTest() {
-		isXMLError("syntaxError.xml");
+	public void syntaxErrorXMLTest_1_5() {
+		isXMLError("syntaxError_1_5.xml");
+		assertTrue(isError);
+	}
+	
+	/*
+	CONFIG FILE 1.6 TESTS
+	 */
+
+	// The DTD throws no errors if the XML is valid
+	@Test
+	public void validXMLTest_1_6() {
+		isXMLError("valid_1_6.xml");
+		assertTrue(!isError);
+	}
+
+	// The DTD throws an error if something that is required in the XML is removed (e.g. id) 
+	@Test
+	public void removeRequiredXMLTest_1_6() {
+		isXMLError("removeRequired_1_6.xml");
+		assertTrue(isError);
+	}
+
+	// The DTD throws an error if the XML file is out of order
+	@Test
+	public void reorderedXMLTest_1_6() {
+		isXMLError("reordered_1_6.xml");
+		assertTrue(isError);
+	}
+
+	// The DTD throws an error if the XML file is out of order
+	@Test
+	public void syntaxErrorXMLTest_1_6() {
+		isXMLError("syntaxError_1_6.xml");
 		assertTrue(isError);
 	}
 }
