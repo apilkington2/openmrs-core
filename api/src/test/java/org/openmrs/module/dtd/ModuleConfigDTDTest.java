@@ -6,8 +6,6 @@ import org.xml.sax.SAXException;
 
 import org.junit.Test;
 
-import org.w3c.dom.Document;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -15,15 +13,16 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 
 import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 public class ModuleConfigDTDTest {
-
-	DocumentBuilderFactory domFactory;
-	DocumentBuilder builder;
-	Boolean isError;
 	
-	public void isXMLError(String fileName) {
+	private Boolean isError;
+	
+	private void isXMLError(String fileName) {
 		try {
+			DocumentBuilderFactory domFactory;
+			DocumentBuilder builder;
 			isError = false;
 			domFactory = DocumentBuilderFactory.newInstance();
 			domFactory.setValidating(true);
@@ -48,7 +47,7 @@ public class ModuleConfigDTDTest {
 					throw e;
 				}
 			});
-			Document doc = builder.parse("src/test/java/org/openmrs/module/dtd/testxml/" + fileName);
+			builder.parse("src/test/java/org/openmrs/module/dtd/testxml/" + fileName);
 		} catch (SAXException e) {
 			e.printStackTrace();
 			isError = true;
@@ -68,24 +67,24 @@ public class ModuleConfigDTDTest {
 	@Test
 	public void validXMLTest_1_5() {
 		isXMLError("valid_1_5.xml");
-		assertTrue(!isError);
+		assertFalse(isError);
 	}
 
-	// The DTD throws an error if something that is required in the XML is removed (e.g. id) 
+	// The 1.5 DTD throws an error if something that is required in the XML is removed (e.g. id) 
 	@Test
 	public void removeRequiredXMLTest_1_5() {
 		isXMLError("removeRequired_1_5.xml");
 		assertTrue(isError);
 	}
 	
-	// The DTD throws an error if the XML file is out of order
+	// The 1.5 DTD throws an error if the XML file is out of order
 	@Test
 	public void reorderedXMLTest_1_5() {
 		isXMLError("reordered_1_5.xml");
 		assertTrue(isError);
 	}
 
-	// The DTD throws an error if the XML file is out of order
+	// The 1.5 DTD throws an error if the XML file is out of order
 	@Test
 	public void syntaxErrorXMLTest_1_5() {
 		isXMLError("syntaxError_1_5.xml");
@@ -96,28 +95,28 @@ public class ModuleConfigDTDTest {
 	CONFIG FILE 1.6 TESTS
 	 */
 
-	// The DTD throws no errors if the XML is valid
+	// The 1.6 DTD throws no errors if the XML is valid
 	@Test
 	public void validXMLTest_1_6() {
 		isXMLError("valid_1_6.xml");
-		assertTrue(!isError);
+		assertFalse(isError);
 	}
 
-	// The DTD throws an error if something that is required in the XML is removed (e.g. id) 
+	// The 1.6 DTD throws an error if something that is required in the XML is removed (e.g. id) 
 	@Test
 	public void removeRequiredXMLTest_1_6() {
 		isXMLError("removeRequired_1_6.xml");
 		assertTrue(isError);
 	}
 
-	// The DTD throws an error if the XML file is out of order
+	// The 1.6 DTD throws an error if the XML file is out of order
 	@Test
 	public void reorderedXMLTest_1_6() {
 		isXMLError("reordered_1_6.xml");
 		assertTrue(isError);
 	}
 
-	// The DTD throws an error if the XML file is out of order
+	// The 1.6 DTD throws an error if the XML file is out of order
 	@Test
 	public void syntaxErrorXMLTest_1_6() {
 		isXMLError("syntaxError_1_6.xml");
