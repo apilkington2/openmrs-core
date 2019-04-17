@@ -10,8 +10,7 @@
     graphic logo is a trademark of OpenMRS Inc.
 
 -->
-<!DOCTYPE module PUBLIC "-//OpenMRS//DTD OpenMRS Config 1.0//EN"
-	"http://resources.openmrs.org/doctype/config-1.5.dtd">
+<!DOCTYPE module SYSTEM "config-1.5.dtd">
 <module configVersion="1.5">
 
 	<!-- Base Module Properties -->
